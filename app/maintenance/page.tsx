@@ -2,6 +2,7 @@
 import { redirect } from "next/navigation";
 import { currentUser } from "@clerk/nextjs/server";
 import prisma from "@/lib/prisma";
+import { UserButton } from "@clerk/nextjs";
 
 export const runtime = "nodejs";
 
@@ -21,7 +22,7 @@ export default async function MaintenancePage() {
 
     return (
         <div className="flex flex-col items-center justify-center h-screen text-center">
-
+            <UserButton/>
             <h1 className="text-4xl max-sm:text-xl font-bold text-red-600">
                 <span>🚧</span> <br/>
                  Service momentanément indisponible

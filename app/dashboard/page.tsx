@@ -1,5 +1,5 @@
 import { redirect } from "next/navigation";
-import { syncClerkUser } from "../app/action";
+import { syncClerkUser } from "../action";
 
 export default async function DashboardPage() {
     try {

@@ -82,7 +82,7 @@ const Page = () => {
     toast.success("Category mise à jour  avec succès!")
   }
   const handleDeleteCategory = async (categoryId: string) => {
-    const confirmDelete = confirm("Voulez-vous vraiment supprimer cette categorie ? Tous les produits associés seront egalement supprimés")
+    const confirmDelete = confirm("Voulez-vous vraiment supprimer cette categorie ? Tous les transctions associés seront egalement supprimés")
     if (!confirmDelete) return;
     await deleteCategory(categoryId);
     await loadCategories();

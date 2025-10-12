@@ -40,7 +40,7 @@ const Navbar  = () => {
     // Liens comptable dashboard/comptable/new-transaction
     const comptableLinks: NavLink[] = [
         
-        { href: "/transactions", label: "Mes Transactions", icon: Receipt },
+        { href: "/dashboard/comptable/transaction", label: "Mes Transactions", icon: Receipt },
         { href: "/dashboard/comptable/new-transaction", label: "Nouvelle Transaction", icon: PackagePlus },
     ];
 

@@ -7,7 +7,7 @@ const Footer = () => {
         <div className='mt-16 flex flex-col gap-8 items-center md:justify-between md:gap-0 md:flex-row md:items-start bg-gray-800 rounded-lg p-8'>
             {/* first Box */}
             <div className='flex flex-col items-center gap-4 md:items-start'>
-                <Link href="/" className='flex items-center relative aspect-[2/1]'>
+                <Link href="/home" className='flex items-center relative aspect-[2/1]'>
                     <Image
                         src="/logo.png"
                         alt='Cyber Pgs'
@@ -22,17 +22,17 @@ const Footer = () => {
             {/* SecondBox */}
             <div className='flex flex-col gap-4 text-sm text-gray-400 items-center md:items-start'>
                 <p className='text-sm text-amber-50'>Links</p>
-                <Link href="/">Homepage</Link>
-                <Link href="/">Contact</Link>
-                <Link href="/">Terms of Service</Link>
-                <Link href="/">Privacy Policy</Link>
+                <Link href="/home">Homepage</Link>
+                <Link href="/home">Contact</Link>
+                <Link href="/home">Terms of Service</Link>
+                <Link href="/home">Privacy Policy</Link>
                 
             </div>
             <div className='flex flex-col gap-4 text-sm text-gray-400 items-center md:items-start'>
                 <p className='text-sm text-amber-50'>Links</p>
-                <Link href="/">About</Link>
-                <Link href="/">Contact</Link>
-                <Link href="/">Affiliate Program</Link>
+                <Link href="/home">About</Link>
+                <Link href="/home">Contact</Link>
+                <Link href="/home">Affiliate Program</Link>
                
             </div>
         </div>

@@ -81,20 +81,22 @@ const Navbar  = () => {
     
 
     return (
-        <nav className="w-full flex items-center justify-between border-gray-200 border-b pb-4 px-6">
-            <div>
-                 <Link href="/" className="flex items-center gap-2">
+        <nav className="w-full flex items-center justify-between border-gray-200 border-b pb-2 px-6">
+            <div className="">
+                <Link
+                    href="/"
+                    className="flex items-center bg-blue-500 gap-2 relative w-10 h-10 md:w-20 md:h-20"
+                >
                     <Image
                         src="/logo.png"
-                        alt="TrendTheodore"
-                        width={36}
-                        height={36}
-                        className="w-6 h-6 md:w-9 md:h-9"
+                        alt="Cyber Pgs"
+                        fill
+                        className="object-contain"
                     />
-                    <p className="text-md font-medium tracking-wider hidden md:block">
-                        Cyber Pgs
-                    </p>
+                    
                 </Link>
+
+                
 
             </div>
             <div>
@@ -121,6 +123,10 @@ const Navbar  = () => {
                         <X className="w-4 h-4" />
                     </button>
                 </div>
+                <div className="flex justify-end">
+                    <UserButton />
+                </div>
+                
                 {renderLinks("btn")}
             </div>
 

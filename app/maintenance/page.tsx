@@ -22,14 +22,13 @@ export default async function MaintenancePage() {
 
     return (
         <div className="flex flex-col items-center justify-center h-screen text-center">
-            <UserButton/>
+
             <h1 className="text-4xl max-sm:text-xl font-bold text-red-600">
                 <span>🚧</span> <br/>
                  Service momentanément indisponible
             </h1>
-            <p className="mt-4 text-gray-700 max-w-md text-center">Votre compte est en cours d'activation...</p>
-            
-            <p className="text-xs text-gray-500 underline">Veuillez Contacter l'administrateur</p>
+            <p className="mt-4 text-gray-700 max-w-md text-center">Vous devriez d'abord être employé de l'entreprise.</p>
+            <p className="text-xs text-gray-500 underline mt-3">Veuillez Contacter l'administrateur @711</p>
         </div>
     );
 }

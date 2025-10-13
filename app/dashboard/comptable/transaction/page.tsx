@@ -34,7 +34,7 @@ const Page = () => {
 
     }, [clerkId])
 
-    const handleDeleteTransaction = async (transaction: Transaction) => {
+    const handleDeleteTransaction = async (transaction: TransactionWithCategory) => {
         const confirmDelete = confirm("Voulez-vous vraiment supprimer ce produit ?")
         if (!confirmDelete) return;
         try {

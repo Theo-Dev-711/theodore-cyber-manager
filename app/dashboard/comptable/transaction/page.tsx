@@ -1,139 +1,73 @@
-"use client"
-import React, { useEffect } from 'react'
-import { useUser } from '@clerk/nextjs'
-import { useState } from 'react'
-import { TransactionWithCategory } from '@/type'
+"use client";
 
-import Link from 'next/link'
-import { toast } from "react-toastify"
-import { Trash } from 'lucide-react'
-import { deleteTransaction, getTransactions } from '@/app/action'
-import { Transaction } from '@prisma/client'
-import EmptyState from '@/app/components/EmptyState'
-import TransactionImage from '@/app/components/TransactionImage'
+import React, { useEffect, useState } from "react";
+import { useUser } from "@clerk/nextjs";
+import { TransactionWithCategory } from "@/type";
+import TransactionImage from "@/app/components/TransactionImage";
+import EmptyState from "@/app/components/EmptyState";
+import { getTransactions } from "@/app/action";
 
-const Page = () => {
-    const { user } = useUser()
+
+const TransactionsPage = () => {
+    const { user } = useUser();
     const clerkId = user?.id;
-    const [transactions, setTransaction] = useState<TransactionWithCategory[] | undefined>([])
-    const fetchProducts = async () => {
-        try {
-            if (clerkId) {
-                const transactions = await getTransactions(clerkId)
-                if (transactions)
-                    setTransaction(transactions)
+    const [transactions, setTransactions] = useState<TransactionWithCategory[]>([]);
 
-            }
-        } catch (error) {
-            console.error(error)
+    const fetchTransactions = async () => {
+        if (!clerkId) return;
+        try {
+            const data = await getTransactions(clerkId);
+            if (data) setTransactions(data);
+        } catch (err) {
+            console.error(err);
         }
-    }
+    };
+
     useEffect(() => {
-        if (clerkId)
-            fetchProducts()
+        fetchTransactions();
+    }, [clerkId]);
 
-    }, [clerkId])
-
-    const handleDeleteTransaction = async (transaction: TransactionWithCategory) => {
-        const confirmDelete = confirm("Voulez-vous vraiment supprimer ce produit ?")
-        if (!confirmDelete) return;
-        try {
-            if (transaction.imageUrl) {
-                const resDelete = await fetch("/api/uploads", {
-                    method: 'DELETE',
-                    body: JSON.stringify({ path: transaction.imageUrl }),
-                    headers: { 'Content-Type': 'application/json' }
-                })
-                const dataDelete = await resDelete.json()
-                if (!dataDelete.success) {
-                    throw new Error("Erreur lors de la suppression de l'image."),
-                    toast.error("Erreur lors de la suppression de l'image.")
-                } else {
-                    if (clerkId) {
-                        await deleteTransaction(transaction.id, clerkId)
-                        await fetchProducts()
-                        toast.success("Transaction supprimé avec succès")
-                    }
-                    console.log("Suppression de l'image :", transaction.imageUrl);
-                }
-            }
-        } catch (error) {
-
-        }
-    }
     return (
-        
-            <div className='overflow-x-auto'>
-                {transactions?.length === 0 ? (
-                    <div>
-                        <EmptyState
-                            message='Aucun produit disponible'
-                            IconComponent={`PackageSearch`} />
-
-                    </div>
-                ) : (
-                    <table className='table'>
-                        <thead>
-                            <tr>
-                                <th></th>
-                                <th>Image</th>
-                                <th>Nom</th>
-                                <th>Description</th>
-                                <th>Prix</th>
-                                <th>Type</th>
-                                <th>Categorie</th>
-                                <th>Actions</th>
+        <div className="overflow-x-auto">
+            {transactions.length === 0 ? (
+                <EmptyState message="Aucune transaction disponible" IconComponent={`PackageSearch`} />
+            ) : (
+                <table className="table">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Image</th>
+                            <th>Nom</th>
+                            <th>Description</th>
+                            <th>Montant</th>
+                            <th>Type</th>
+                            <th>Catégorie</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {transactions.map((tx, index) => (
+                            <tr key={tx.id}>
+                                <th>{index + 1}</th>
+                                <td>
+                                    <TransactionImage
+                                        src={tx.imageUrl || "/placeholder-image.jpg"}
+                                        alt={tx.imageUrl || "Transaction Image"}
+                                        heightClass="h-12"
+                                        widthClass="h-12"
+                                    />
+                                </td>
+                                <td>{tx.name}</td>
+                                <td>{tx.description}</td>
+                                <td>{tx.amount} $</td>
+                                <td className="capitalize">{tx.type}</td>
+                                <td>{tx.categoryName}</td>
                             </tr>
-                        </thead>
-                        <tbody>
-                            {transactions?.map((transaction, index) => (
-                                <tr key={transaction.id}>
-                                    <th>{index + 1}</th>
-                                    <td>
-                                        <TransactionImage
-                                            src={transaction.imageUrl || "/placeholder-image.jpg"}
-                                            alt={transaction.imageUrl || "Image de transaction"}
-                                            heightClass='h-12'
-                                            widthClass='h-12'
-                                        />
-                                    </td>
-                                    <td>
-                                        {transaction.name}
-                                    </td>
-                                    <td>
-                                        {transaction.description}
-                                    </td>
-                                    <td>
-                                        {transaction.amount} $
-                                    </td>
-                                    <td className='capitalize'>
-                                        {transaction.type}
-                                    </td>
-                                    <td>
-                                        {transaction.categoryName}
-                                    </td>
-                                    <td className='flex gap-2 flex-col'>
-                                        <Link
-                                            className="btn btn-xs w-fit btn-primary"
-                                            href={`/update-product/${transaction.id}`}
-                                        >
-                                            Modifier
-                                        </Link>
+                        ))}
+                    </tbody>
+                </table>
+            )}
+        </div>
+    );
+};
 
-                                        <button onClick={() => handleDeleteTransaction(transaction)} className='btn btn-xs w-fit'>
-                                            
-                                            <Trash className='w-4 h-4' />
-                                        </button>
-                                    </td>
-
-                                </tr>
-                            ))}
-                        </tbody>
-                    </table>
-                )}
-            </div>
-        
-    )
-}
-
-export default Page
+export default TransactionsPage;

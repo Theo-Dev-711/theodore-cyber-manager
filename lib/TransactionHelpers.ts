@@ -52,7 +52,7 @@ export async function readTransactionsNode(clerkId: string): Promise<Transaction
         // Ajouter le champ calculé categoryName
         return transactions.map((tx) => ({
             ...tx,
-            categoryName: tx.category?.name ||  "Sans catégorie",
+            categoryName: tx.category?.name ||  "",
         }));
 
     } catch (error) {

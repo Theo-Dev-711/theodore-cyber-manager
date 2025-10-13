@@ -11,7 +11,7 @@ export interface FormDataType {
   amount: number;
   description: string;
   type: string;
-  imageUrl?: string;
+  imageUrl?: string | null;
   categoryId?: string;
   categoryName?: string;
 }

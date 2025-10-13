@@ -15,7 +15,7 @@ export interface TransactionWithCategory extends PrismaTransaction {
  */
 export interface FormDataType {
   id?: string;
-  name: string;
+  name?: string | null;
   amount: number;
   description?: string;
   type: string // Enum TypeTransaction

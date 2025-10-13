@@ -11,7 +11,7 @@ export async function createTransactionNode(
   try {
     const { name, description, amount, type, imageUrl, categoryId } = formData;
 
-    if (!name || amount === undefined || !categoryId) {
+    if (!name || amount === undefined || !categoryId || !type) {
       throw new Error("Nom, montant et catégorie requis");
     }
 
@@ -23,14 +23,13 @@ export async function createTransactionNode(
     if (!user) throw new Error("Utilisateur introuvable");
 
     // Forcer TypeScript à accepter string
-    const transactionType: string = type; // "DEPENSE" ou "REVENU" depuis ton select
 
     const transaction = await prisma.transaction.create({
       data: {
         name,
         description: description || "",
         amount: Number(amount),
-        type: transactionType,
+        type,
         imageUrl: imageUrl || "",
         categoryId,
         createdById: user.id,

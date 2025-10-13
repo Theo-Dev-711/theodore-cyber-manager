@@ -1,34 +1,28 @@
-import React from "react";
-import Image from "next/image";
-
-interface TransactionImageProps {
-    src: string | null;
-    alt: string;
-    heightClass?: string;
-    widthClass?: string;
+import React from 'react'
+import Image from 'next/image'
+interface ProductImageProps {
+    src: string,
+    alt: string,
+    heightClass?: string,
+    widthClass?: string
 }
 
-const TransactionImage: React.FC<TransactionImageProps> = ({
-    src,
-    alt,
-    heightClass,
-    widthClass,
-}) => {
-    const imageSrc = src || "/placeholder-image.jpg";
+const ProductImage: React.FC<ProductImageProps> = ({ src, alt, heightClass, widthClass }) => {
     return (
-        <div className="avatar">
+        <div className='avatar'>
             <div className={`mask mask-squircle ${heightClass} ${widthClass}`}>
                 <Image
-                    src={imageSrc}
-                    alt={alt || "Transaction Image"}
+                    src={src}
+                    alt={alt}
                     quality={100}
-                    className="object-cover"
+                    className='object-cover'
                     height={500}
                     width={500}
                 />
+
             </div>
         </div>
-    );
-};
+    )
+}
 
-export default TransactionImage;
+export default ProductImage

@@ -5,8 +5,6 @@ import { Transaction as PrismaTransaction, Category } from "@prisma/client";
  * Représente une transaction avec les infos de la catégorie et imageUrl
  */
 export interface TransactionWithCategory extends PrismaTransaction {
-  imageUrl: string | null; // image optionnelle
-  category?: Category | null; // relation incluse
   categoryName: string; // champ dérivé pour affichage
 }
 

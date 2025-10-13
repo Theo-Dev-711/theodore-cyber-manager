@@ -13,13 +13,13 @@ import TransactionImage from '@/app/components/TransactionImage'
 const Page = () => {
     const { user } = useUser()
     const clerkId = user?.id;
-    const [transactions, setTransaction] = useState<TransactionWithCategory[] | undefined>([])
+    const [transactions, setTransactions] = useState<TransactionWithCategory[]>([]);
     const fetchProducts = async () => {
         try {
             if (clerkId) {
                 const transactions = await getTransactions(clerkId)
                 if (transactions)
-                    setTransaction(transactions)
+                    setTransactions(transactions)
             }
         } catch (error) {
             console.error(error)
@@ -87,8 +87,8 @@ const Page = () => {
                                     <th>{index + 1}</th>
                                     <td>
                                         <TransactionImage
-                                            src={transaction.imageUrl || ""}
-                                            alt={transaction.imageUrl || ""}
+                                            src={transaction.imageUrl}
+                                            alt={transaction.imageUrl}
                                             heightClass='h-12'
                                             widthClass='h-12'
                                         />

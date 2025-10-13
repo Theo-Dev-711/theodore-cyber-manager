@@ -41,11 +41,11 @@ export async function readTransactionsNode(
 
     const transactions = await prisma.transaction.findMany({
       where: { createdById: user.id },
-      include: { category: true },
+      include: { category: true }, // ✅ on inclut bien la relation Category
       orderBy: { createdAt: "desc" },
     });
 
-    // On force le type pour TS
+    // ✅ on ajoute le champ calculé categoryName
     return transactions.map(
       (tx): TransactionWithCategory => ({
         ...tx,
@@ -57,7 +57,6 @@ export async function readTransactionsNode(
     return undefined;
   }
 }
-
 
 // ✅ Update Transaction Node
 export async function updateTransactionNode(transactionId: string, formData: FormDataType, clerkId: string) {

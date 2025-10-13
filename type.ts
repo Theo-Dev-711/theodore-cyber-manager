@@ -4,9 +4,12 @@ import { Transaction as PrismaTransaction, Category } from "@prisma/client";
 /**
  * Représente une transaction avec les infos de la catégorie et imageUrl
  */
+
 export interface TransactionWithCategory extends PrismaTransaction {
-  categoryName: string; // champ dérivé pour affichage
+  category: Category | null; // ✅ Prisma renvoie toujours ça
+  categoryName: string; // ton champ dérivé pour affichage
 }
+
 
 /**
  * Formulaire de création ou mise à jour de transaction
@@ -17,7 +20,7 @@ export interface FormDataType {
   amount: number;
   description?: string;
   type: string // Enum TypeTransaction
-  imageUrl?: string | null;
+  imageUrl: string ;
   categoryId: string;
   categoryName?: string;
 }

@@ -1,8 +1,9 @@
 
-import { Transaction as PrismaTransaction } from "@prisma/client";
+import { Category, Transaction as PrismaTransaction } from "@prisma/client";
 
 export interface TransactionWithCategory extends PrismaTransaction {
-  categoryName: string;
+  category?: Category | null; // relation incluse
+  categoryName?: string; // champ dérivé
 }
 
 export interface FormDataType {

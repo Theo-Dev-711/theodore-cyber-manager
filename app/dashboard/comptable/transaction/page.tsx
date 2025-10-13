@@ -54,6 +54,7 @@ const Page = () => {
                         await fetchProducts()
                         toast.success("Transaction supprimé avec succès")
                     }
+                    console.log("Suppression de l'image :", transaction.imageUrl);
                 }
             }
         } catch (error) {
@@ -120,6 +121,7 @@ const Page = () => {
                                         </Link>
 
                                         <button onClick={() => handleDeleteTransaction(transaction)} className='btn btn-xs w-fit'>
+                                            
                                             <Trash className='w-4 h-4' />
                                         </button>
                                     </td>

@@ -39,13 +39,17 @@ const CategoryModal: React.FC<Props> = ({ name, description, loading, onclose, o
                         type='text'
                         className='input input-bordered w-full mb-4'
                     />
-                    <button onClick={onSubmit} disabled={loading} className='btn  btn-primary'>
-                        {
-                            loading ?
-                                editmode ? "Modification..." : "Ajout..." :
-                                editmode ? "Modifier" : "Ajouter"
-                        }
+                    <button
+                        onClick={onSubmit}
+                        disabled={loading}
+                        className='btn btn-primary flex items-center gap-2'
+                    >
+                        {loading && <span className="loading loading-spinner loading-sm"></span>}
+                        {loading
+                            ? editmode ? "Modification..." : "Ajout..."
+                            : editmode ? "Modifier" : "Ajouter"}
                     </button>
+
                 </div>
             </dialog>
         </div>

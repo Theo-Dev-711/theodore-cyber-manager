@@ -30,7 +30,7 @@ export async function createTransactionNode(
         description: description || "",
         amount: Number(amount),
         type,
-        imageUrl: imageUrl,
+        imageUrl: imageUrl || "",
         categoryId,
         createdById: user.id,
       },

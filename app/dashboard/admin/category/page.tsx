@@ -88,12 +88,25 @@ const Page = () => {
     await loadCategories();
     toast.success("Categorie supprimée avec succès!")
   }
+
   return (
     <>
       <div className='mt-10'>
         <div className='mb-4'>
-          <button className='btn bg-blue-500 text-white hover:text-black' onClick={openCreateModal}>
-            Ajouter une Category
+
+          <button
+            onClick={openCreateModal}
+            disabled={loading} // désactive le bouton pendant le chargement
+            className="btn bg-blue-500 hover:text-black text-white flex items-center gap-2"
+          >
+            {loading ? (
+              <>
+                <span className="loading loading-spinner loading-sm"></span>
+                Ajout...
+              </>
+            ) : (
+              "Ajouter"
+            )}
           </button>
         </div>
       </div>

@@ -103,8 +103,11 @@ const Page = () => {
     } catch (error) {
       console.error(error)
       toast.error("Il y a eu une erreur lors de la création du produit")
+    } finally {
+      setLoading(false) // 🔹 désactive le loader
     }
   }
+  const [loading, setLoading] = useState(false)
 
   return (
 
@@ -190,9 +193,21 @@ const Page = () => {
             />
             
 
-            <button onClick={handleSubmit} className="btn bg-blue-500 hover:text-black text-white">
-              Créer la transaction
+            <button
+              onClick={handleSubmit}
+              disabled={loading} // désactive le bouton pendant le chargement
+              className="btn bg-blue-500 hover:text-black text-white flex items-center gap-2"
+            >
+              {loading ? (
+                <>
+                  <span className="loading loading-spinner loading-sm"></span>
+                  Création...
+                </>
+              ) : (
+                "Créer la transaction"
+              )}
             </button>
+
           </div>
 
           <div className="md:ml-4 md:w-[300px] mt-4 md:mt-0 border-2 md:h-[300px] p-5 flex border-primary justify-center items-center rounded-3xl">

@@ -67,7 +67,7 @@ export async function updateTransactionNode(transactionId: string, formData: For
     return await prisma.transaction.updateMany({
         where: { id: transactionId, createdById: user.id },
         data: {
-            name: formData.name,
+            name: formData.name || "",
             description: formData.description || "",
             amount: formData.amount,
             type: formData.type,

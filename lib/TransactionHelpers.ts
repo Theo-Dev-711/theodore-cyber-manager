@@ -4,30 +4,46 @@ import { getCurrentUser } from "@/app/action";// fonction pour récupérer user 
  
 
 // ✅ Create Transaction Node
-export async function createTransactionNode(formData: FormDataType, clerkId: string) {
+export async function createTransactionNode(
+  formData: FormDataType,
+  clerkId: string
+) {
+  try {
     const { name, description, amount, type, imageUrl, categoryId } = formData;
 
     if (!name || amount === undefined || !categoryId) {
-        throw new Error("Le nom, le montant et la catégorie sont requis");
+      throw new Error("Nom, montant et catégorie requis");
     }
 
-    if (amount < 0) throw new Error("Le montant doit être supérieur à 0");
+    if (amount < 0) {
+      throw new Error("Montant doit être positif");
+    }
 
     const user = await getCurrentUser(clerkId);
     if (!user) throw new Error("Utilisateur introuvable");
 
-    return await prisma.transaction.create({
+    // Forcer TypeScript à accepter string
+    const transactionType: string = type; // "DEPENSE" ou "REVENU" depuis ton select
+
+    const transaction = await prisma.transaction.create({
       data: {
         name,
         description: description || "",
         amount: Number(amount),
-        type,
+        type: transactionType,
         imageUrl: imageUrl || "",
         categoryId,
         createdById: user.id,
       },
     });
+
+    return transaction;
+  } catch (error) {
+    console.error("Erreur createTransactionNode:", error);
+    throw error;
+  }
 }
+
 
 // ✅ Read Transactions Node
 export async function readTransactionsNode(

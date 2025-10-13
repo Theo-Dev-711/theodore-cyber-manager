@@ -1,6 +1,4 @@
 // type.ts
-import { Transaction as PrismaTransaction, Category } from "@prisma/client";
-
 /**
  * Représente une transaction avec les infos de la catégorie et imageUrl
  */
@@ -34,7 +32,7 @@ export interface FormDataType {
   name: string;
   amount: number;
   description?: string;
-  type: string // Enum TypeTransaction
+  type: string ;
   imageUrl: string ;
   categoryId: string;
   categoryName?: string;

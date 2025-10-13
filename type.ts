@@ -1,39 +1,16 @@
-// type.ts
-/**
- * Représente une transaction avec les infos de la catégorie et imageUrl
- */
+import { Transaction as PrismaTransaction, Category } from "@prisma/client";
 
-export interface TransactionWithCategory {
-  id: string;
-  name: string;
-  description: string | null;
-  amount: number;
-  type: string;
-  imageUrl: string ;
-  categoryId: string;
-  createdById: string;
-  createdAt: Date;
-  updatedAt: Date;
+export interface TransactionWithCategory extends PrismaTransaction {
   categoryName: string;
-  category?: {
-    id: string;
-    name: string;
-    description: string | null;
-  } | null;
 }
 
-
-
-/**
- * Formulaire de création ou mise à jour de transaction
- */
 export interface FormDataType {
   id?: string;
-  name: string;
+  name: string; // ✅ Toujours string, jamais null
   amount: number;
   description?: string;
-  type: string ;
-  imageUrl: string ;
+  type: string; // Enum TypeTransaction
+  imageUrl: string;
   categoryId: string;
   categoryName?: string;
 }

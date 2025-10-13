@@ -2,7 +2,6 @@
 import { Category, Transaction as PrismaTransaction } from "@prisma/client";
 
 export interface TransactionWithCategory extends PrismaTransaction {
-  imageUrl: string  // 🔹 ajoute explicitement
   category?: Category | null; // relation incluse
   categoryName?: string; // champ dérivé
 }

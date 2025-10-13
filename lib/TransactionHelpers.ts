@@ -30,36 +30,34 @@ export async function createTransactionNode(formData: FormDataType, clerkId: str
 }
 
 // ✅ Read Transactions Node
-export async function readTransactionsNode(clerkId: string): Promise<TransactionWithCategory[] | undefined> {
-    try {
-        if (!clerkId) {
-            throw new Error("clerkId est requis !");
-        }
+export async function readTransactionsNode(
+  clerkId: string
+): Promise<TransactionWithCategory[] | undefined> {
+  try {
+    if (!clerkId) throw new Error("clerkId est requis !");
 
-        // Vérifier que l'utilisateur existe
-        const user = await getCurrentUser(clerkId);
-        if (!user) {
-            throw new Error("Utilisateur introuvable avec ce clerkId");
-        }
+    const user = await getCurrentUser(clerkId);
+    if (!user) throw new Error("Utilisateur introuvable avec ce clerkId");
 
-        // Récupérer les transactions de cet utilisateur
-        const transactions = await prisma.transaction.findMany({
-            where: { createdById: user.id },
-            include: { category: true },
-            orderBy: { createdAt: "desc" },
-        });
+    const transactions = await prisma.transaction.findMany({
+      where: { createdById: user.id },
+      include: { category: true },
+      orderBy: { createdAt: "desc" },
+    });
 
-        // Ajouter le champ calculé categoryName
-        return transactions.map((tx) => ({
-            ...tx,
-            categoryName: tx.category?.name ||  "",
-        }));
-
-    } catch (error) {
-        console.error("Erreur readTransactions:", error);
-        return undefined;
-    }
+    // On force le type pour TS
+    return transactions.map(
+      (tx): TransactionWithCategory => ({
+        ...tx,
+        categoryName: tx.category?.name || "",
+      })
+    );
+  } catch (error) {
+    console.error("Erreur readTransactions:", error);
+    return undefined;
+  }
 }
+
 
 // ✅ Update Transaction Node
 export async function updateTransactionNode(transactionId: string, formData: FormDataType, clerkId: string) {

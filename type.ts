@@ -5,11 +5,25 @@ import { Transaction as PrismaTransaction, Category } from "@prisma/client";
  * Représente une transaction avec les infos de la catégorie et imageUrl
  */
 
-export interface TransactionWithCategory extends PrismaTransaction {
-  category: Category | null; // ✅ Prisma renvoie toujours ça
-  categoryName: string; // ton champ dérivé pour affichage
-  imageUrl : string
+export interface TransactionWithCategory {
+  id: string;
+  name: string;
+  description: string | null;
+  amount: number;
+  type: string;
+  imageUrl: string ;
+  categoryId: string;
+  createdById: string;
+  createdAt: Date;
+  updatedAt: Date;
+  categoryName: string;
+  category?: {
+    id: string;
+    name: string;
+    description: string | null;
+  } | null;
 }
+
 
 
 /**

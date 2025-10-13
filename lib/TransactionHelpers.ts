@@ -48,10 +48,27 @@ export async function readTransactionsNode(
     // ✅ on ajoute le champ calculé categoryName
     return transactions.map(
       (tx): TransactionWithCategory => ({
-        ...tx,
+        id: tx.id,
+        name: tx.name,
+        amount: tx.amount,
+        description: tx.description,
+        type: tx.type,
+        createdAt: tx.createdAt,
+        updatedAt: tx.updatedAt,
+        imageUrl: tx.imageUrl, // ✅ requis
+        categoryId: tx.categoryId,
+        createdById: tx.createdById,
         categoryName: tx.category?.name || "",
+        category: tx.category
+          ? {
+              id: tx.category.id,
+              name: tx.category.name,
+              description: tx.category.description,
+            }
+          : null,
       })
     );
+
   } catch (error) {
     console.error("Erreur readTransactions:", error);
     return undefined;

@@ -14,7 +14,7 @@ const Page = () => {
     const { user } = useUser()
     const clerkId = user?.id;
     const [transactions, setTransactions] = useState<TransactionWithCategory[]>([]);
-    const fetchProducts = async () => {
+    const fetchTransactions = async () => {
         try {
             if (clerkId) {
                 const transactions = await getTransactions(clerkId)
@@ -27,7 +27,7 @@ const Page = () => {
     }
     useEffect(() => {
         if (clerkId)
-            fetchProducts()
+            fetchTransactions()
 
     }, [clerkId])
 
@@ -48,8 +48,8 @@ const Page = () => {
                 } else {
                     if (clerkId) {
                         await deleteTransaction(transaction.id, clerkId)
-                        await fetchProducts()
-                        toast.success("Produit supprimé avec succès")
+                        await fetchTransactions()
+                        toast.success("Transaction supprimé avec succès")
                     }
                 }
             }

@@ -8,6 +8,7 @@ import { Transaction as PrismaTransaction, Category } from "@prisma/client";
 export interface TransactionWithCategory extends PrismaTransaction {
   category: Category | null; // ✅ Prisma renvoie toujours ça
   categoryName: string; // ton champ dérivé pour affichage
+  imageUrl : string
 }
 
 

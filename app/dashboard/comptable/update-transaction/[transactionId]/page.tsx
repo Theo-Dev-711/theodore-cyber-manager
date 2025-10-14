@@ -44,7 +44,7 @@ const Page = ({ params }: { params: Promise<{ transactionId: string }> }) => {
                     setFormData({
                         id: fetchedTransaction.id,
                         name: fetchedTransaction.name,
-                        description: fetchedTransaction.description,
+                        description: fetchedTransaction.description || "",
                         amount: fetchedTransaction.amount,
                         type: fetchedTransaction.type,
                         imageUrl: fetchedTransaction.imageUrl,

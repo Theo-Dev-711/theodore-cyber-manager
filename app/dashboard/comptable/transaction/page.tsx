@@ -32,7 +32,7 @@ const Page = () => {
     }, [clerkId])
 
     const handleDeleteProduct = async (transaction: TransactionWithCategory) => {
-        const confirmDelete = confirm("Voulez-vous vraiment supprimer ce produit ?")
+        const confirmDelete = confirm("Voulez-vous vraiment supprimer cette Transaction ?")
         if (!confirmDelete) return;
         try {
             if (transaction.imageUrl) {
@@ -59,7 +59,7 @@ const Page = () => {
     }
     return (
         
-            <div className='overflow-x-auto'>
+            <div className='overflow-x-auto mt-10'>
                 {transactions?.length === 0 ? (
                     <div>
                         <EmptyState
@@ -111,7 +111,7 @@ const Page = () => {
                                     <td className='flex gap-2 flex-col'>
                                         <Link
                                             className="btn btn-xs w-fit btn-primary"
-                                            href={`/update-product/${transaction.id}`}
+                                            href={`/dashboard/comptable/update-transaction/${transaction.id}`}
                                         >
                                             Modifier
                                         </Link>

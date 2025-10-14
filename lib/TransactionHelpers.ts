@@ -73,22 +73,71 @@ return transactions.map((tx) => ({
 }
 
 // ✅ Update Transaction Node
-export async function updateTransactionNode(transactionId: string, formData: FormDataType, clerkId: string) {
-    const user = await getCurrentUser(clerkId);
-    if (!user) throw new Error("Utilisateur introuvable");
+export async function updateTransactionNode(formData: FormDataType, clerkId: string) {
+  try {
+    const { id, name, description, amount,  imageUrl } = formData;
+    if (!id || !amount || !description  || !imageUrl) {
+      throw new Error(
+        "L'id, le nom, le prix et la description sont requis pour la mise a jour du produit."
+      );
+    }
 
-    return await prisma.transaction.updateMany({
-        where: { id: transactionId, createdById: user.id },
-        data: {
-            name: formData.name || "",
-            description: formData.description || "",
-            amount: formData.amount,
-            type: formData.type,
-            imageUrl: formData.imageUrl || "",
-            categoryId: formData.categoryId,
-        },
+    const user = await getCurrentUser(clerkId);
+    if (!user) {
+      throw new Error("Aucune Associaton trouvé avec cet email");
+    }
+
+    await prisma.transaction.update({
+      where: {
+        id: id,
+        createdById: user.id,
+      },
+      data: {
+        name,
+        description,
+        amount: Number(amount),
+        imageUrl: imageUrl,
+      },
     });
+  } catch (error) {
+    console.error(error);
+  }
 }
+
+// ✅ Read TransactionByIdNode
+export async function readTransactionByIdNode(transactionId: string, clerkId: string) {
+  try {
+    if (!clerkId) {
+      throw new Error("Votre Id est requis !");
+    }
+
+    const user = await getCurrentUser(clerkId);
+    if (!user) {
+      throw new Error("Aucun Id trouvé avec cet email");
+    }
+
+    const transaction = await prisma.transaction.findUnique({
+      where: {
+        id: transactionId,
+        createdById: user.id,
+      },
+      include: {
+        category: true,
+      },
+    });
+    if (!transaction) {
+      return null;
+    }
+
+    return {
+      ...transaction,
+      categoryName: transaction.category?.name,
+    };
+  } catch (error) {
+    console.error(error);
+  }
+}
+
 
 // ✅ Delete Transaction Node
 export async function deleteTransactionNode(transactionId: string, clerkId: string) {

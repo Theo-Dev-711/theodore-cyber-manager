@@ -7,7 +7,13 @@ import {
   syncClerkUserNode,
   verifyUserClerkIdNode,
 } from "@/lib/prismaHelpers";
-import { createTransactionNode, deleteTransactionNode, readTransactionsNode, updateTransactionNode } from "@/lib/TransactionHelpers";
+import {
+  createTransactionNode,
+  deleteTransactionNode,
+  readTransactionsNode,
+  readTransactionByIdNode,
+  updateTransactionNode,
+} from "@/lib/TransactionHelpers";
 import { FormDataType } from "@/type";
 
 export async function getUserRole() {
@@ -114,10 +120,20 @@ export async function getTransactions(clerkId: string) {
   }
 }
 
-// ✅ Update Transaction Action
-export async function updateTransaction(transactionId: string, formData: FormDataType, clerkId: string) {
+// ✅ Read Transaction Action
+export async function readTransactionById(transactionId: string, clerkId: string) {
   try {
-    return await updateTransactionNode(transactionId, formData, clerkId);
+    return await readTransactionByIdNode(transactionId, clerkId);
+  } catch (error) {
+    console.error("Erreur updateTransaction:", error);
+    throw error;
+  }
+}
+
+
+export async function updateTransaction(formData: FormDataType, clerkId: string) {
+  try {
+    return await updateTransactionNode(formData, clerkId);
   } catch (error) {
     console.error("Erreur updateTransaction:", error);
     throw error;

@@ -112,7 +112,7 @@ const Page = () => {
   return (
 
     <div className="flex justify-center items-center">
-      <div>
+      <div className="mt-10">
         <h1 className="text-2xl font-bold mb-4">Créer Une Transaction</h1>
         <section className="flex md:flex-row flex-col">
           <div className="space-y-4 md:w-[450px]">

@@ -13,12 +13,11 @@ model Users {
   email        String        @unique
   role         Role          @default(COMPTABLE)
   createdAt    DateTime      @default(now())
-  clerkId      String?       
+  clerkId      String?
   transactions Transaction[]
 
   @@map("Users")
 }
-
 
 model Category {
   id           String        @id @default(uuid())
@@ -30,40 +29,40 @@ model Category {
 }
 
 model Transaction {
-  id          String          @id @default(uuid())
-  name         String
+  id          String   @id @default(uuid())
+  name        String
   amount      Float
   description String
   type        String
-  createdAt   DateTime        @default(now())
-  updatedAt    DateTime      @updatedAt
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
   imageUrl    String
   categoryId  String
   createdById String
-  category    Category        @relation(fields: [categoryId], references: [id])
-  createdBy   Users           @relation(fields: [createdById], references: [id])
+  category    Category @relation(fields: [categoryId], references: [id])
+  createdBy   Users    @relation(fields: [createdById], references: [id])
 }
 
 model JournalFinancier {
-  id              String      @id @default(uuid())
-  date            DateTime    @unique
-  totalRecettes   Float       @default(0)
-  totalDepenses   Float       @default(0)
-  resultatNet     Float       @default(0)
-  statutJournee   StatutJournee
-  commentaire     String?
-  createdAt       DateTime    @default(now())
-  apports         ApportExterne[]
+  id            String          @id @default(uuid())
+  date          DateTime        @unique
+  totalRecettes Float           @default(0)
+  totalDepenses Float           @default(0)
+  resultatNet   Float           @default(0)
+  statutJournee StatutJournee
+  commentaire   String?
+  createdAt     DateTime        @default(now())
+  apports       ApportExterne[]
 }
 
 model ApportExterne {
-  id           String   @id @default(uuid())
-  montant      Float
-  source       String   // "Patron", "Banque", etc.
-  date         DateTime @default(now())
-  commentaire  String?
-  journalId    String?
-  journal      JournalFinancier? @relation(fields: [journalId], references: [id])
+  id          String            @id @default(uuid())
+  montant     Float
+  source      String // "Patron", "Banque", etc.
+  date        DateTime          @default(now())
+  commentaire String?
+  journalId   String?
+  journal     JournalFinancier? @relation(fields: [journalId], references: [id])
 }
 
 enum StatutJournee {
@@ -76,4 +75,3 @@ enum Role {
   ADMIN
   COMPTABLE
 }
-

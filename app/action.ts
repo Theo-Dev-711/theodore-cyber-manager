@@ -1,6 +1,8 @@
 "use server";
 
 import { createCategoryNode, deleteCategoryNode, getCategoriesNode, getCategoryByIdNode, updateCategoryNode } from "@/lib/categoryHelpers";
+import { getDashboardSummaryNode, getStatsByPeriodeNode } from "@/lib/dashboardService";
+
 import {
   getCurrentUserNode,
   getUserRoleNode,
@@ -14,7 +16,8 @@ import {
   readTransactionByIdNode,
   updateTransactionNode,
 } from "@/lib/TransactionHelpers";
-import { FormDataType } from "@/type";
+import { createUserNode, deleteUserNode, getAllUsersNode, updateUserNode } from "@/lib/userHelpers";
+import { FormDataType, UserDataType } from "@/type";
 
 export async function getUserRole() {
   try {
@@ -101,7 +104,10 @@ export async function verifyUserClerkId() {
  }
 
  // ✅ Create Transaction Action
-export async function createTransaction(formData: FormDataType, clerkId: string) {
+export async function createTransaction(
+  formData: FormDataType,
+  clerkId: string
+) {
   try {
     return await createTransactionNode(formData, clerkId);
   } catch (error) {
@@ -146,6 +152,80 @@ export async function deleteTransaction(transactionId: string, clerkId: string) 
     return await deleteTransactionNode(transactionId, clerkId);
   } catch (error) {
     console.error("Erreur deleteTransaction:", error);
+    throw error;
+  }
+}
+
+//createUserNode
+export async function createUser(formData: UserDataType) {
+  try {
+    return await createUserNode(formData);
+  } catch (error) {
+    console.error("Erreur CreateUser:", error);
+    throw error;
+  }
+};
+
+//getAllUsersNode
+export async function getAllUsers() {
+  try {
+    return await getAllUsersNode();
+  } catch (error) {
+    console.error("Erreur lors de la recuperation du user:", error);
+    throw error;
+  }
+};
+
+//deleteUsersNode
+export async function deleteUser(id: string) {
+  try {
+    return await deleteUserNode(id);
+  } catch (error) {
+    console.error("Erreur lors de la suppression:", error);
+    throw error;
+  }
+};
+
+//updateUserNode
+export async function updateUser(formData: UserDataType) {
+  try {
+    return await updateUserNode(formData);
+  } catch (error) {
+    console.error("Erreur lors de la suppression:", error);
+    throw error;
+  }
+};
+
+//service Dashboard---------------------------------------------------------------------------------------
+
+// 📂 lib/dashboardActions.ts
+
+
+// 📂 lib/dashboardActions.ts
+/**
+ * dashboardActions.ts
+ * ------------------
+ * Couches server action pour le frontend
+ * Appelle les fonctions Node et renvoie les données prêtes pour React
+ */
+
+/**
+ * getDashboardData
+ * ----------------
+ * Récupère les données du dashboard pour le front
+ * - userId : id du comptable connecté
+ * - periode : "jour" | "semaine" | "mois" | "annee"
+ */
+export async function getDashboardData(
+  
+  periode: "jour" | "semaine" | "mois" | "annee"
+) {
+  try {
+    const summary = await getDashboardSummaryNode();
+    const stats = await getStatsByPeriodeNode(periode);
+    return { ...summary, ...stats };
+  } catch (error) {
+    console.error("Erreur getDashboardData:", error);
     throw error;
   }
 }

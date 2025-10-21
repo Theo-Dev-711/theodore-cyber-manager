@@ -1,6 +1,8 @@
 import prisma from "@/lib/prisma";
 import { FormDataType, TransactionWithCategory } from "../type";
 import { getCurrentUser } from "@/app/action";// fonction pour récupérer user via clerkId
+import { syncJournalFinancierNode } from "./journalFinancierHelpers";
+
  
 
 // ✅ Create Transaction Node
@@ -8,40 +10,32 @@ export async function createTransactionNode(
   formData: FormDataType,
   clerkId: string
 ) {
-  try {
-    const { name, description, amount, type, imageUrl, categoryId } = formData;
+  const { name, description, amount, type, imageUrl, categoryId } = formData;
+  if (!name || amount === undefined || !categoryId || !type)
+    throw new Error("Nom, montant et catégorie requis");
+  if (Number(amount) < 0) throw new Error("Montant doit être positif");
 
-    if (!name || amount === undefined || !categoryId || !type) {
-      throw new Error("Nom, montant et catégorie requis");
-    }
+  const user = await getCurrentUser(clerkId);
+  if (!user) throw new Error("Utilisateur introuvable");
 
-    if (amount < 0) {
-      throw new Error("Montant doit être positif");
-    }
+  const transaction = await prisma.transaction.create({
+    data: {
+      name,
+      description: description || "",
+      amount: Number(amount),
+      type,
+      imageUrl: imageUrl || "",
+      categoryId,
+      createdById: user.id,
+    },
+  });
 
-    const user = await getCurrentUser(clerkId);
-    if (!user) throw new Error("Utilisateur introuvable");
+  // 🔄 Synchronisation du journal financier après transaction
+  await syncJournalFinancierNode();
 
-    // Forcer TypeScript à accepter string
-
-    const transaction = await prisma.transaction.create({
-      data: {
-        name,
-        description: description || "",
-        amount: Number(amount),
-        type,
-        imageUrl: imageUrl || "",
-        categoryId,
-        createdById: user.id,
-      },
-    });
-
-    return transaction;
-  } catch (error) {
-    console.error("Erreur createTransactionNode:", error);
-    throw error;
-  }
+  return transaction;
 }
+
 
 
 // ✅ Read Transactions Node

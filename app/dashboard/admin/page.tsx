@@ -1,31 +1,73 @@
-"use server";
+// 📂 app/dashboard/page.tsx
+"use client";
 
-import { currentUser } from "@clerk/nextjs/server";
-import { Check } from "lucide-react";
+import { getDashboardData } from "@/app/action";
+import DashboardHeader from "@/app/components/DashboardHeader";
+import DashboardPeriodStats from "@/app/components/DashboardPeriodStats";
+import DashboardStats from "@/app/components/DashboardStats";
+import { BarChart3, FolderOpen, Users } from "lucide-react";
+import React, { useEffect, useState } from "react";
 
-export default async function AdminPage() {
-    // Récupération de l'utilisateur connecté
-    const user = await currentUser();
 
-    if (!user) {
+export default function DashboardPage() {
+    const [periode, setPeriode] = useState<"jour" | "semaine" | "mois" | "annee">("jour");
+    const [dashboardData, setDashboardData] = useState<any>(null);
+    const [loading, setLoading] = useState(true);
+
+    useEffect(() => {
+        setLoading(true);
+        getDashboardData(periode).then((res) => {
+            setDashboardData(res);
+            setLoading(false);
+        });
+    }, [periode]);
+
+    if (loading) 
         return (
-            <div>
-                Vous n'êtes pas connecté.
+            <div className="flex flex-col items-center justify-center h-screen space-y-4">
+                <span className="loading loading-spinner loading-lg text-blue-500"></span>
+                <p className="text-blue-500 font-semibold text-lg animate-pulse">
+                    Chargement des données du tableau de bord...
+                </p>
             </div>
         );
-    }
 
-    // Infos que tu peux afficher
-    const fullName = user.fullName || "Utilisateur";
-    const email = user.primaryEmailAddress?.emailAddress || "Email inconnu";
+;
 
     return (
-        <div className="flex flex-col items-center text-center gap-4 mt-20">
-            <h1 className="text-4xl font-bold">Mes félicitations, {fullName} !</h1>
-            <p className="text-xl text-gray-600">Vous êtes admin.</p>
-            <p className="text-lg">Email : {email}</p>
-            <Check className="w-20 h-20 text-green-600" />
+        <div className="p-4">
+            <DashboardHeader title="Tableau de bord" />
+
+            {/* Statistiques globales */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mt-4">
+                <DashboardStats icon={<BarChart3 className="w-6 h-6 text-primary" />} label="Transactions totales" value={dashboardData.totalTransactionsCount} />
+                <DashboardStats icon={<Users className="w-6 h-6 text-primary" />} label="Employés" value={dashboardData.employeesCount} />
+                <DashboardStats icon={<FolderOpen className="w-6 h-6 text-primary" />} label="Catégories" value={dashboardData.categoriesCount} />
+
+            </div>
+
+            {/* Sélecteur de période */}
+            <div className="mt-6 flex justify-end">
+                <select
+                    value={periode}
+                    onChange={(e) => setPeriode(e.target.value as any)}
+                    className="select select-bordered select-sm"
+                >
+                    <option value="jour">Jour</option>
+                    <option value="semaine">Semaine</option>
+                    <option value="mois">Mois</option>
+                    <option value="annee">Année</option>
+                </select>
+            </div>
+
+            {/* Statistiques financières + Graphe */}
+            <DashboardPeriodStats
+                totalRecettes={dashboardData?.totalRecettes}
+                totalDepenses={dashboardData?.totalDepenses}
+                resultatNet={dashboardData?.resultatNet}
+                statut={dashboardData?.statut}
+                chartData={dashboardData?.chartData}
+            />
         </div>
     );
 }
-

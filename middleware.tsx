@@ -8,7 +8,7 @@ import { syncClerkUser } from "./app/action";            // Fonction personnalis
 
 // 📍 Fonction utilitaire pour identifier les routes publiques (sign-in et sign-up)
 const isPublicRoute = (path: string) =>
-    ["/sign-in", "/sign-up"].some((route) => path.startsWith(route));
+    ["/sign-in", "/sign-up", "/home"].some((route) => path.startsWith(route));
 
 
 // 🧩 Middleware principal

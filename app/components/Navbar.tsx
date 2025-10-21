@@ -1,7 +1,7 @@
 "use client"; // 🔑 pour pouvoir utiliser useState, useEffect et hooks Clerk
 
 import { UserButton, useUser } from "@clerk/nextjs";
-import {  LayoutDashboard, ListTree, Menu, PackagePlus, Receipt, ShoppingBasket, Users, X } from "lucide-react";
+import {  Building2, LayoutDashboard, ListTree, Menu, PackagePlus, Receipt, ShoppingBasket, Users, X } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import React, { useState, useEffect } from "react";
@@ -39,14 +39,14 @@ const Navbar  = () => {
 
     // Liens comptable dashboard/comptable/new-transaction
     const comptableLinks: NavLink[] = [
-        
+        { href: "/", label: "Tableau de Bord", icon: LayoutDashboard },
         { href: "/dashboard/comptable/transaction", label: "Mes Transactions", icon: Receipt },
         { href: "/dashboard/comptable/new-transaction", label: "Nouvelle Transaction", icon: PackagePlus },
     ];
 
     // Liens admin
     const adminLinks: NavLink[] = [
-        
+        { href: "/dashboard/admin", label: "Tableau de Bord", icon: LayoutDashboard },
         { href: "/dashboard/admin/category", label: "Catégories", icon: ListTree },
         { href: "/dashboard/admin/users", label: "Utilisateurs", icon: Users }, // exemple
     ];
@@ -91,17 +91,13 @@ const Navbar  = () => {
     return (
         <nav className="w-full flex items-center justify-between border-gray-200 border-b pb-2 px-6">
             <div className="">
-                <Link
-                    href="/"
-                    className="flex items-center bg-blue-500 gap-2 relative w-10 h-10 "
-                >
-                    <Image
-                        src="/logo.png"
-                        alt="Cyber Pgs"
-                        fill
-                        className="object-contain"
-                    />
-                    
+                <Link href="/" className="flex items-center gap-2 group">
+                    <div className="p-2 bg-primary/10 rounded-xl group-hover:bg-primary/20 transition">
+                        <Building2 className="w-6 h-6 text-primary group-hover:scale-110 transition-transform duration-300" />
+                    </div>
+                    <p className="font-bold text-lg tracking-wide text-gray-800 group-hover:text-primary transition">
+                        CYBER <span className="text-primary">PGS</span>
+                    </p>
                 </Link>
 
             </div>

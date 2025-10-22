@@ -1,7 +1,7 @@
 import prisma from "@/lib/prisma";
 import { FormDataType, TransactionWithCategory } from "../type";
 import { getCurrentUser } from "@/app/action";// fonction pour récupérer user via clerkId
-import { syncJournalFinancierNode } from "./journalFinancierHelpers";
+// import { syncJournalFinancierNode } from "./journalFinancierHelpers";
 
  
 
@@ -30,8 +30,8 @@ export async function createTransactionNode(
     },
   });
 
-  // 🔄 Synchronisation du journal financier après transaction
-  await syncJournalFinancierNode();
+  // // 🔄 Synchronisation du journal financier après transaction
+  // await syncJournalFinancierNode();
 
   return transaction;
 }

@@ -102,7 +102,7 @@ const Page = () => {
       router.push("/dashboard/comptable/transaction")
     } catch (error) {
       console.error(error)
-      toast.error("Il y a eu une erreur lors de la création du produit")
+      toast.error("Erreur de Transaction")
     } finally {
       setLoading(false) // 🔹 désactive le loader
     }
